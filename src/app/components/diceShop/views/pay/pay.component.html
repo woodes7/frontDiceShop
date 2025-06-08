@@ -54,7 +54,7 @@
   <!-- Total y Confirmar Pedido a la derecha -->
   <div class="text-end">
     <h4>Total: {{ total | currency }}</h4>
-    <button mat-raised-button color="primary" class="mt-2 px-4" (click)="pay()">
+    <button mat-raised-button color="primary" class="mt-2 px-4" (click)="pay()" [disabled]="!billingAddress || items.length === 0">
       <mat-icon class="me-1">check_circle</mat-icon> Pagar
     </button>
   </div>

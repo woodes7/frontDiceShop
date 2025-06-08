@@ -34,6 +34,10 @@ export class UserService {
     return this.http.get<UserDto>(`${this.apiUrl}/user/${id}`);
   }
 
+  getUserByEmail(email: string): Observable<UserDto> {
+    return this.http.get<UserDto>(`${this.apiUrl}/getUserByEmail?email=${email}`);
+  }
+
   // Crear nuevo usuario
   addUser(user: UserDto): Observable<boolean> {
     return this.http.post<boolean>(`${this.apiUrl}/add`, user);
@@ -93,14 +97,18 @@ register(user: UserDto): Observable<boolean> {
 }
 
 sendConfirmationEmail(email: string): Observable<boolean> {
+  console.log("aqui1")
   const params = new HttpParams().set('email', email);
   return this.http.post<boolean>(`${this.apiUrl}/send-confirmation`, null, { params });
 }
 
   confirmEmail(token: string) {
+      console.log("aqui2")
     const params = new HttpParams().set('token', token);
     return this.http.post(`${this.apiUrl}/confirm-email`, null, { params });
   }
+
+  
 
 
 }

@@ -17,14 +17,15 @@ export class FormBillingAddressComponent implements OnInit {
   id: number | null = null;
   currentAddress: BillingaddressDto = {} as BillingaddressDto;
   addresses: BillingaddressDto[] = [];
-displayedColumns: string[] = ['address', 'actions'];
+  displayedColumns: string[] = ['address', 'actions'];
+  isFirst: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private billingAddressService: BillingAddressService
-  ) { 
+  ) {
     this.loadForm(new BillingaddressDto());
   }
 
@@ -64,9 +65,11 @@ displayedColumns: string[] = ['address', 'actions'];
     const user = sessionStorage.getItem('user');
     const userId = user ? JSON.parse(user).id : 0;
 
-    this.billingAddressService.getBillingAddresses().subscribe({
+    this.billingAddressService.getBillingAddressesByUser(userId).subscribe({
       next: (res) => {
-        this.addresses = res.filter(addr => addr.userId === userId);
+        if (res.length == 0)
+          this.isFirst = true;
+        this.addresses = res;
       }
     });
   }
@@ -80,7 +83,8 @@ displayedColumns: string[] = ['address', 'actions'];
     return {
       ...this.currentAddress,
       ...values,
-      userId: userId
+      userId: userId,
+      isPrimary: this.isFirst ? true : values.isPrimary
     };
   }
 
@@ -118,11 +122,11 @@ displayedColumns: string[] = ['address', 'actions'];
     }
   }
 
-  createNewAddress(){
+  createNewAddress() {
     this.router.navigate(['/views/billingAddress']);
   }
 
   onBack(): void {
-    this.router.navigate(['/views/order']);
+    this.router.navigate(['/views/pay']);
   }
 }

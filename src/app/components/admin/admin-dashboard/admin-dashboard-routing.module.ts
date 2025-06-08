@@ -52,14 +52,6 @@ const routes: Routes = [
           )
       },
       {
-        path: 'orderDetails',
-        canActivate: [adminGuard],
-        loadChildren: () =>
-          import('../orderDetails/order-detail.module').then(
-            (m) => m.OrderDetailModule
-          )
-      },
-      {
         path: 'discounts',
         canActivate: [adminGuard],
         loadChildren: () =>
@@ -81,14 +73,6 @@ const routes: Routes = [
         loadChildren: () =>
           import('../coupons/coupon.module').then(
             (m) => m.CouponModule
-          )
-      },
-      {
-        path: 'paymentMethods',
-        canActivate: [adminGuard],
-        loadChildren: () =>
-          import('../paymentMethods/paymentMethod.module').then(
-            (m) => m.PaymentMethodModule
           )
       },
     ]

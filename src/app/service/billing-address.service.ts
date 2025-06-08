@@ -11,22 +11,26 @@ import { PagedResult } from '../model/PagedResult';
 export class BillingAddressService {
   private apiUrl = `${environment.apiURL}/BillingAddress`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Obtener todas las direcciones de facturación
   getBillingAddresses(): Observable<BillingaddressDto[]> {
     return this.http.get<BillingaddressDto[]>(`${this.apiUrl}/billingAdresses`);
   }
 
-  getBillingAddressesPaged(pageNumber: number, pageSize: number, search?: string): Observable<PagedResult<BillingaddressDto>> {
-  const params: any = { pageNumber, pageSize };
-  if (search) {
-    params.search = search;
+  getBillingAddressesByUser(userId: number): Observable<BillingaddressDto[]> {
+    return this.http.get<BillingaddressDto[]>(`${this.apiUrl}/billingAdressesByUser?userId=${userId}`);
   }
-  return this.http.get<PagedResult<BillingaddressDto>>(`${this.apiUrl}/billingAdressesPaged`, { params });
-}
 
-  
+  getBillingAddressesPaged(pageNumber: number, pageSize: number, search?: string): Observable<PagedResult<BillingaddressDto>> {
+    const params: any = { pageNumber, pageSize };
+    if (search) {
+      params.search = search;
+    }
+    return this.http.get<PagedResult<BillingaddressDto>>(`${this.apiUrl}/billingAdressesPaged`, { params });
+  }
+
+
   // Obtener una dirección de facturación por ID
   getBillingAddress(id: number): Observable<BillingaddressDto> {
     return this.http.get<BillingaddressDto>(`${this.apiUrl}/billingAddress/${id}`);

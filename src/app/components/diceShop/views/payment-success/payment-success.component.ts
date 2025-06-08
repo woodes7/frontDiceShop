@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../../service/auth.service';
 import { UserDto } from '../../../../model/UserDto';
 import { ShoppingcartDto } from '../../../../model/ShoppingcartDto';
+import { PaymentService } from '../../../../service/payment.service';
 
 @Component({
   selector: 'app-payment-success',
@@ -17,8 +18,7 @@ export class PaymentSuccessComponent implements OnInit {
   load: boolean;
 
   constructor(
-    private productService: ProductService,
-    private shoppingCartService: ShoppingCartService,
+    private paymentService: PaymentService,
     private router: Router,
     private authService: AuthService
   ) {
@@ -26,20 +26,21 @@ export class PaymentSuccessComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let user = this.authService.currentUser$;
+    this.getUser();
   }
 
   getUser() {
     this.authService.currentUser$.subscribe(
       {
         next: (response) => {
-          let user: UserDto = new UserDto();
           if (response) {
-            user = response;
+            console.log(response);
+            this.paymentService.postPurchase(response.id).subscribe();
           }
         }
       });
   }
+
 
   goHome(): void {
     this.router.navigate(['/']);

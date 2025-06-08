@@ -22,6 +22,10 @@ export class OrderService {
     return this.http.get<OrderDto>(`${this.apiUrl}/order?id=${id}`);
   }
 
+   getOrdersByUser(userId: number): Observable<OrderDto[]> {
+    return this.http.get<OrderDto[]>(`${this.apiUrl}/orderByUser?userId=${userId}`);
+  }
+
   // Crear un nuevo pedido
   addOrder(order: OrderDto): Observable<boolean> {
     return this.http.post<boolean>(`${this.apiUrl}/add`, order);

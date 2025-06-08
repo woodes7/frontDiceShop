@@ -127,6 +127,6 @@ export class CartComponent implements OnInit {
   }
 
   goToOrder(): void {
-    this.router.navigate(['/views/order']);
+    this.router.navigate(['/views/pay']);
   }
 }

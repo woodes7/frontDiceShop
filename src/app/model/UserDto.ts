@@ -6,4 +6,5 @@ export class UserDto {
   avatar: string;
   password: string;
   registrationDate: Date | null;
+  emailConfirmed: boolean;
 }

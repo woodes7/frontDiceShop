@@ -18,17 +18,53 @@ export class RegisterComponent {
     phone: '',
     avatar: '',
     password: '',
+    emailConfirmed: false,
     registrationDate: null
   };
+  confirmed: boolean;
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router) { }
 
   onRegister(): void {
     if (!this.user.fullName || !this.user.email || !this.user.password) {
       Swal.fire('Error', 'Por favor, completa todos los campos obligatorios', 'warning');
       return;
     }
+    this.getUser();
+  }
+  getUser() {
+    this.userService.getUserByEmail(this.user.email).subscribe(
+      {
+        next: (response) => {
+          if (response) {
+            console.log(response);
+            if (!response.emailConfirmed) {
+              Swal.fire({
+                icon: 'warning',
+                title: 'Ya existe un usuario no confirmado',
+                text: 'Parece que ya existe un usuario con este correo pero no ha sido confirmado',
+                confirmButtonText:'Enviar confirmación',
+                cancelButtonText:'Cancelar'
+              })
+                .then((res) => {
+                  if(res.isConfirmed)
+                    this.userService.sendConfirmationEmail(this.user.email).subscribe(
+                      {
+                        next:(response) => {
+                          console.log(response);
+                        }
+                      }
+                    );
+                });
+            }
+          } else
+            this.register();
+        }
+      }
+    );
+  }
 
+  register() {
     this.userService.register(this.user).subscribe({
       next: (success) => {
         if (success) {

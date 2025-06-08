@@ -41,17 +41,6 @@
       <mat-header-row *matHeaderRowDef="['productName', 'productDescription', 'quantity', 'unitPrice', 'subtotal']"></mat-header-row>
       <mat-row *matRowDef="let row; columns: ['productName', 'productDescription', 'quantity', 'unitPrice', 'subtotal'];"></mat-row>
     </mat-table>
-    <div class="text-right mt-2">
-      <mat-form-field appearance="outline" class="ml-2 w-150">
-    <mat-label>Estado</mat-label>
-    <mat-select [value]="order.orderStatus" (selectionChange)="changeStatus(order, $event.value)">
-      <mat-option value="Preparando">Preparando</mat-option>
-      <mat-option value="Almacén">Almacén</mat-option>
-      <mat-option value="Enviado">Enviado</mat-option>
-      <mat-option value="Entregado">Entregado</mat-option>
-    </mat-select>
-  </mat-form-field>
-    </div>
   </mat-expansion-panel>
 </mat-accordion>
 

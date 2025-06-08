@@ -7,16 +7,16 @@ import { BillingAddressService } from '../../../../service/billing-address.servi
 import { BillingaddressDto } from '../../../../model/BillingaddressDto';
 import { Router } from '@angular/router';
 import { loadStripe } from '@stripe/stripe-js';
-import { PaymentMethodService } from '../../../../service/payment-method.service';
 import { OrderRequest } from '../../../../model/OrderRequest';
+import { PaymentService } from '../../../../service/payment.service';
 
 @Component({
   selector: 'app-order',
   standalone: false,
-  templateUrl: './order.component.html',
-  styleUrls: ['./order.component.css']
+  templateUrl: './pay.component.html',
+  styleUrls: ['./pay.component.css']
 })
-export class OrderComponent implements OnInit {
+export class PayComponent implements OnInit {
   items: ShoppingcartitemDto[] = [];
   total = 0;
   cart: ShoppingcartDto | null = null;
@@ -28,7 +28,7 @@ export class OrderComponent implements OnInit {
     private shoppingCartItemService: ShoppingCartItemService,
     private billingAddressService: BillingAddressService,
     private router: Router,
-    private paymentService: PaymentMethodService
+    private paymentService: PaymentService
   ) { }
 
   ngOnInit(): void {
@@ -53,30 +53,36 @@ export class OrderComponent implements OnInit {
     });
   }
 
-pay(): void {
-  if (this.items.length === 0) {
-    console.warn("⚠️ No hay productos para pagar.");
-    return;
+  pay(): void {
+    if (this.items.length === 0) {
+      console.warn("⚠️ No hay productos para pagar.");
+      return;
+    }
+
+    if (!this.billingAddress) {
+      console.warn("⚠️ No hay dirección de facturación.");
+      alert("Debes añadir una dirección de facturación antes de pagar.");
+      return;
+    }
+
+    const orderRequest: OrderRequest = {
+      items: this.items.map(item => ({
+        name: item.productName,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice
+      })),
+
+      totalAmount: this.total,
+      billingAddress: this.billingAddress
+    };
+
+    console.log("🧾 Pedido enviado:", orderRequest);
+
+    this.paymentService.pay(orderRequest).subscribe(res => {
+      console.log("✅ Redirigiendo a Stripe:", res);
+      window.location.href = res.url;
+    });
   }
-
-  const orderRequest: OrderRequest = {
-    items: this.items.map(item => ({
-      name: item.productName,
-      quantity: item.quantity,
-      unitPrice: item.unitPrice
-    })),
-    
-    totalAmount: this.total,
-    billingAddress: this.billingAddress
-  };
-
-  console.log("🧾 Pedido enviado:", orderRequest);
-
-  this.paymentService.pay(orderRequest).subscribe(res => {
-    console.log("✅ Redirigiendo a Stripe:", res);
-    window.location.href = res.url;
-  });
-}
 
 
   getAddress(userId: number) {

@@ -32,17 +32,13 @@
           <mat-icon>account_circle</mat-icon>
           <span>Cuenta</span>
         </button>
-        <button mat-menu-item [routerLink]="['/views/payment']">
-          <mat-icon>credit_card</mat-icon>
-          <span>Pago</span>
+        <button mat-menu-item [routerLink]="['/views/orders']">
+          <mat-icon>account_circle</mat-icon>
+          <span>Pedidos</span>
         </button>
         <button mat-menu-item [routerLink]="['/views/billingAddress']">
           <mat-icon>home</mat-icon>
           <span>Dirección</span>
-        </button>
-        <button mat-menu-item [routerLink]="['/views/order']">
-          <mat-icon>receipt_long</mat-icon>
-          <span>Pedido</span>
         </button>
         <button mat-menu-item (click)="logout()">
           <mat-icon>logout</mat-icon>

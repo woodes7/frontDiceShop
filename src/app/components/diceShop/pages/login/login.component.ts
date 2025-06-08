@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserDto } from '../../../../model/UserDto';
 import { AdminService } from '../../../../service/admin.service';
 import { AuthService } from '../../../../service/auth.service';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-login',
   standalone: false,
@@ -25,16 +26,7 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(): void {
-    this.userService.login(this.email, this.password).subscribe({
-      next: (user: UserDto) => {
-        user.password = "";
-        this.authService.setUser(user); // Aquí notificas al resto
-        this.isAdmin(user);
-      },
-      error: () => {
-        this.errorMessage = 'Credenciales incorrectas.';
-      }
-    });
+   this.getUser();
   }
 
   isAdmin(user: UserDto) {
@@ -52,4 +44,44 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+
+  login(){
+     this.userService.login(this.email, this.password).subscribe({
+      next: (user: UserDto) => {
+        user.password = "";
+        this.authService.setUser(user); // Aquí notificas al resto
+        this.isAdmin(user);
+      },
+      error: () => {
+        this.errorMessage = 'Credenciales incorrectas.';
+      }
+    });
+  }
+
+  getUser() {
+      this.userService.getUserByEmail(this.email).subscribe(
+        {
+          next: (response) => {
+            if (response) {
+              console.log(response);
+              if (!response.emailConfirmed) {
+                Swal.fire({
+                  icon: 'warning',
+                  title: 'No ha confirmado su cuenta',
+                  text: 'Parece que no ha confirmado la cuenta con este correo',
+                  confirmButtonText:'Enviar confirmación',
+                  cancelButtonText:'Cancelar'
+                })
+                  .then((res) => {
+                    if(res.isConfirmed)
+                      this.userService.sendConfirmationEmail(this.email).subscribe();
+                  });
+              }else
+                this.login();
+            } else
+              this.login();
+          }
+        }
+      );
+    }
 }

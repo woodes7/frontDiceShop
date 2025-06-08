@@ -20,7 +20,7 @@
 
     <mat-form-field class="w-100 mb-3" appearance="fill">
       <mat-label>Contraseña</mat-label>
-      <input matInput [(ngModel)]="user.password" name="password" required type="password">
+      <input matInput [(ngModel)]="user.password" name="password" required type="password"  pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$">
     </mat-form-field>
 
     <!-- Botones alineados igual que en login -->

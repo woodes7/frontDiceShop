@@ -14,12 +14,16 @@ export class OrderDetailService {
 
   // Obtener todos los detalles de pedidos
   getOrderDetails(): Observable<OrderDetailDto[]> {
-    return this.http.get<OrderDetailDto[]>(`${this.apiUrl}/orderDetail`);
+    return this.http.get<OrderDetailDto[]>(`${this.apiUrl}/orderDetails`);
+  }
+
+  getOrderDetailById(id: number): Observable<OrderDetailDto[]> {
+    return this.http.get<OrderDetailDto[]>(`${this.apiUrl}/orderDetail/${id}`);
   }
 
   // Obtener detalle de pedido por ID
-  getOrderDetail(id: number): Observable<OrderDetailDto> {
-    return this.http.get<OrderDetailDto>(`${this.apiUrl}/orderDetail/${id}`);
+  getOrderDetailsByOrder(orderId: number): Observable<OrderDetailDto[]> {
+    return this.http.get<OrderDetailDto[]>(`${this.apiUrl}/orderDetailByOrder?orderId=${orderId}`);
   }
 
   // Agregar detalle de pedido

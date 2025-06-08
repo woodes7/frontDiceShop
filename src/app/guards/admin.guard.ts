@@ -8,8 +8,14 @@ export const adminGuard: CanActivateFn = async (route, state) => {
 
   const userJson = sessionStorage.getItem('user');
   if (!userJson) {
-    router.navigate(['/login']);
+    router.navigate(['/pages/login']);
     return false;
+  }else{
+    const user = JSON.parse(userJson!);
+    if(!user.emailConfirmed){
+      router.navigate(['/pages/login']);
+      return false;
+    }
   }
 
   const user = JSON.parse(userJson);
