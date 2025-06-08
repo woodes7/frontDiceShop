@@ -1,0 +1,60 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card w-100 p-4" style="max-width: 600px;">
+    <h4 class="text-center mb-4">
+      {{ isEdit ? 'Editar Reseña' : 'Nueva Reseña' }}
+    </h4>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <mat-form-field appearance="fill" class="w-100 mb-3">
+        <mat-label>ID del Producto</mat-label>
+        <input matInput type="number" formControlName="productId" />
+        <mat-error *ngIf="form.get('productId')?.hasError('required')">
+          El ID del producto es obligatorio.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-100 mb-3">
+        <mat-label>ID del Usuario</mat-label>
+        <input matInput type="number" formControlName="userId" />
+        <mat-error *ngIf="form.get('userId')?.hasError('required')">
+          El ID del usuario es obligatorio.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-100 mb-3">
+        <mat-label>Valoración (1 a 5)</mat-label>
+        <input matInput type="number" formControlName="rating" />
+        <mat-error *ngIf="form.get('rating')?.hasError('required')">
+          La valoración es obligatoria.
+        </mat-error>
+        <mat-error *ngIf="form.get('rating')?.hasError('min') || form.get('rating')?.hasError('max')">
+          Debe estar entre 1 y 5.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-100 mb-3">
+        <mat-label>Comentario</mat-label>
+        <textarea matInput formControlName="comment" rows="3"></textarea>
+        <mat-error *ngIf="form.get('comment')?.hasError('required')">
+          El comentario es obligatorio.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-100 mb-3">
+        <mat-label>Fecha de reseña</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="reviewDate" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-secondary" (click)="onBack()">Volver</button>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+          {{ isEdit ? 'Actualizar' : 'Crear' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

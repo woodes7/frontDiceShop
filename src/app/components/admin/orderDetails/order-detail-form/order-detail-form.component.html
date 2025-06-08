@@ -1,0 +1,55 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card w-100 p-4" style="max-width: 500px;">
+  <h2 class="text-center mb-4">
+    {{ isEdit ? 'Editar Detalle de Pedido' : 'Nuevo Detalle de Pedido' }}
+  </h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>ID del Pedido</mat-label>
+      <input matInput type="number" formControlName="orderId" />
+      <mat-error *ngIf="form.get('orderId')?.hasError('required')">
+        Este campo es obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>ID del Producto</mat-label>
+      <input matInput type="number" formControlName="productId" />
+      <mat-error *ngIf="form.get('productId')?.hasError('required')">
+        Este campo es obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Cantidad</mat-label>
+      <input matInput type="number" formControlName="quantity" />
+      <mat-error *ngIf="form.get('quantity')?.hasError('required')">
+        La cantidad es obligatoria
+      </mat-error>
+      <mat-error *ngIf="form.get('quantity')?.hasError('min')">
+        Debe ser al menos 1
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Precio Unitario</mat-label>
+      <input matInput type="number" formControlName="unitPrice" />
+      <mat-error *ngIf="form.get('unitPrice')?.hasError('required')">
+        El precio es obligatorio
+      </mat-error>
+      <mat-error *ngIf="form.get('unitPrice')?.hasError('min')">
+        No puede ser negativo
+      </mat-error>
+    </mat-form-field>
+
+    <div class="d-flex justify-content-between mt-4">
+      <button mat-stroked-button color="warn" type="button" (click)="onBack()">Volver</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        {{ isEdit ? 'Actualizar' : 'Crear' }}
+      </button>
+    </div>
+  </form>
+  </div>
+</div>

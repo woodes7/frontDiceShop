@@ -1,0 +1,76 @@
+<mat-card>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+    <h2>Direcciones de Facturación</h2>
+    <button mat-raised-button color="primary" (click)="onAdd()">Nueva Dirección</button>
+  </div>
+
+    <mat-form-field appearance="outline" class="w-100 mb-3">
+    <mat-label>Buscar por dirección, ciudad o país</mat-label>
+    <input matInput [(ngModel)]="searchTerm" (input)="onSearchChange()" />
+  </mat-form-field>
+
+  <table mat-table [dataSource]="billingAddresses" class="mat-elevation-z8" style="width: 100%;">
+    
+    <ng-container matColumnDef="userFullName">
+      <th mat-header-cell *matHeaderCellDef> Usuario </th>
+      <td mat-cell *matCellDef="let item"> {{ item.userFullName }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="country">
+      <th mat-header-cell *matHeaderCellDef> País </th>
+      <td mat-cell *matCellDef="let item"> {{ item.country }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="state">
+      <th mat-header-cell *matHeaderCellDef> Provincia </th>
+      <td mat-cell *matCellDef="let item"> {{ item.state }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="city">
+      <th mat-header-cell *matHeaderCellDef> Ciudad </th>
+      <td mat-cell *matCellDef="let item"> {{ item.city }} </td>
+    </ng-container>
+
+     <ng-container matColumnDef="street">
+      <th mat-header-cell *matHeaderCellDef> Dirección </th>
+      <td mat-cell *matCellDef="let item"> {{ item.street }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="postalCode">
+      <th mat-header-cell *matHeaderCellDef> Código Postal </th>
+      <td mat-cell *matCellDef="let item"> {{ item.postalCode }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="isPrimary">
+      <th mat-header-cell *matHeaderCellDef> Principal </th>
+      <td mat-cell *matCellDef="let item"> {{ item.isPrimary ? 'Sí' : 'No' }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="creationDate">
+      <th mat-header-cell *matHeaderCellDef> Fecha de creación </th>
+      <td mat-cell *matCellDef="let item"> {{ item.creationDate | date:'shortDate' }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let item">
+        <button mat-icon-button color="accent" (click)="onEdit(item.id)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="onDelete(item.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+    <mat-paginator
+    [length]="totalItems"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10, 25]"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+</mat-card>

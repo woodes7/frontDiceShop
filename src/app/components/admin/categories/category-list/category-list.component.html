@@ -1,0 +1,51 @@
+<mat-card>
+  
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+    <h2>Categorías</h2>
+    <button mat-raised-button color="primary" (click)="onAdd()">Alta</button>
+  </div>
+
+    <!-- Buscador -->
+  <mat-form-field appearance="outline" class="w-100 mb-3">
+    <mat-label>Buscar por nombre...</mat-label>
+    <input matInput [(ngModel)]="searchTerm" (input)="onSearchChange()" />
+  </mat-form-field>
+
+  <table mat-table [dataSource]="categories" class="mat-elevation-z8" style="width: 100%;">
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let category"> {{ category.name }} </td>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef> Descripción </th>
+      <td mat-cell *matCellDef="let category"> {{ category.description }} </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let category">
+        <button mat-icon-button color="primary" (click)="onEdit(category.id)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="onDelete(category.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+    <mat-paginator
+    [length]="totalItems"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10, 25]"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+</mat-card>

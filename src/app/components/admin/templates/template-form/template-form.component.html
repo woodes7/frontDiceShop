@@ -1,0 +1,19 @@
+<!-- generic-form.component.html -->
+<mat-card>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <ng-container *ngFor="let control of form.controls | keyvalue">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>{{ control.key | titlecase }}</mat-label>
+        <input matInput *ngIf="!control.value instanceof Object" [formControlName]="control.key" />
+        <textarea matInput *ngIf="typeof control.value.value === 'string' && control.key === 'description'" [formControlName]="control.key"></textarea>
+        <mat-error *ngIf="form.get(control.key)?.hasError('required')">
+          El campo {{ control.key }} es obligatorio
+        </mat-error>
+      </mat-form-field>
+    </ng-container>
+
+    <button mat-raised-button color="primary" type="submit">
+      {{ isEdit ? 'Actualizar' : 'Crear' }}
+    </button>
+  </form>
+</mat-card>

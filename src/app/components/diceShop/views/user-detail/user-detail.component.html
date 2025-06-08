@@ -1,0 +1,47 @@
+<mat-card class="p-4" style="max-width: 600px; margin: 0 auto;">
+  <h4 class="text-center mb-4">Editar Perfil de Usuario</h4>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!-- Nombre completo -->
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Nombre completo</mat-label>
+      <input matInput formControlName="fullName" required />
+      <mat-error *ngIf="form.get('fullName')?.invalid">Campo requerido</mat-error>
+    </mat-form-field>
+
+    <!-- Email -->
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" required />
+      <mat-error *ngIf="form.get('email')?.invalid">Email inválido</mat-error>
+    </mat-form-field>
+
+    <!-- Teléfono -->
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Teléfono</mat-label>
+      <input matInput formControlName="phone" />
+    </mat-form-field>
+
+    <!-- Avatar -->
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>URL del Avatar</mat-label>
+      <input matInput formControlName="avatar" />
+    </mat-form-field>
+
+    <!-- Contraseña -->
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Contraseña</mat-label>
+      <input matInput type="password" formControlName="password" />
+    </mat-form-field>
+
+    <!-- Botones -->
+    <div class="d-flex justify-content-between mt-4">
+      <button mat-stroked-button color="accent" type="button" (click)="onBack()">
+        <mat-icon class="me-1">arrow_back</mat-icon> Volver
+      </button>
+      <button mat-stroked-button color="primary" type="submit" [disabled]="form.invalid">
+        <mat-icon class="me-1">save</mat-icon> Guardar Cambios
+      </button>
+    </div>
+  </form>
+</mat-card>

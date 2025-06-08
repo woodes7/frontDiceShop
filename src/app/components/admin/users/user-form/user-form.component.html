@@ -1,0 +1,52 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card w-100 p-4" style="max-width: 500px;">
+    <h4 class="text-center mb-4">
+      {{ isEdit ? 'Editar Usuario' : 'Nuevo Usuario' }}
+    </h4>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill" class="w-100 mb-3">
+        <mat-label>Nombre completo</mat-label>
+        <input matInput formControlName="fullName" />
+        <mat-error *ngIf="form.get('fullName')?.hasError('required')">
+          El nombre completo es obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-100 mb-3">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" />
+        <mat-error *ngIf="form.get('email')?.hasError('required')">
+          El email es obligatorio
+        </mat-error>
+        <mat-error *ngIf="form.get('email')?.hasError('email')">
+          El email no es válido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-100 mb-3">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="phone" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-100 mb-3">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-100 mb-3">
+        <mat-label>Avatar (URL)</mat-label>
+        <input matInput formControlName="avatar" />
+      </mat-form-field>
+
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-secondary" (click)="onBack()">
+          Volver
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+          {{ isEdit ? 'Actualizar' : 'Crear' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

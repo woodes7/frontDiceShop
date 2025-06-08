@@ -1,0 +1,76 @@
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Resumen del Pedido</h2>
+
+  <mat-card *ngIf="items.length > 0; else noItems" class="p-3">
+
+    <h4 class="mb-3">Productos</h4>
+    <mat-list>
+      <div *ngFor="let item of items; let last = last" class="pb-3 mb-3 border-bottom">
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <h5 class="mb-1">{{ item.productName }}</h5>
+      <p class="mb-0">Cantidad: {{ item.quantity }}</p>
+    </div>
+    <div class="text-end">
+      <p class="mb-0">{{ item.unitPrice | currency }}</p>
+      <small class="text-muted">Subtotal: {{ item.unitPrice * item.quantity | currency }}</small>
+    </div>
+  </div>
+</div>
+      <mat-divider></mat-divider>
+    </mat-list>
+
+   <mat-card class="mt-4 p-3" *ngIf="billingAddress">
+  <h5 class="mb-2"><mat-icon class="me-1">home</mat-icon> Dirección de Facturación</h5>
+  <p class="mb-2">
+    {{ billingAddress.street }} {{ billingAddress.streetNumber }},
+    <span *ngIf="billingAddress.door">Puerta {{ billingAddress.door }},</span>
+    <span *ngIf="billingAddress.floor">Piso {{ billingAddress.floor }},</span>
+    {{ billingAddress.city }}, {{ billingAddress.state }},
+    {{ billingAddress.postalCode }}, {{ billingAddress.country }}
+  </p>
+
+  <!-- Nuevo botón -->
+  <div class="text-end">
+    <button mat-stroked-button color="accent" (click)="editBillingAddress()">
+      <mat-icon>edit</mat-icon> Editar dirección
+    </button>
+  </div>
+</mat-card>
+<mat-card class="mt-4 p-3" *ngIf="!billingAddress">
+  <p>No tienes una dirección de facturación registrada.</p>
+  <div class="text-end">
+    <a mat-raised-button color="primary" [routerLink]="['/views/billingAddress']">
+      <mat-icon>add</mat-icon> Añadir dirección
+    </a>
+  </div>
+</mat-card>
+    <div class="d-flex justify-content-between align-items-end mt-4">
+  <!-- Botón Volver a la izquierda -->
+  <button mat-stroked-button color="warn" (click)="returnCart()">
+    <mat-icon class="me-1">arrow_back</mat-icon> Volver al carrito
+  </button>
+
+  <!-- Total y Confirmar Pedido a la derecha -->
+  <div class="text-end">
+    <h4>Total: {{ total | currency }}</h4>
+    <button mat-raised-button color="primary" class="mt-2 px-4" (click)="pay()">
+      <mat-icon class="me-1">check_circle</mat-icon> Pagar
+    </button>
+  </div>
+</div>
+
+
+  </mat-card>
+
+  <ng-template #noItems>
+    <div class="text-center mt-5">
+      <mat-icon class="mb-2" style="font-size: 48px; color: #ccc;">shopping_cart</mat-icon>
+      <p class="mb-2">No hay productos en el carrito.</p>
+      <a mat-raised-button color="accent" routerLink="/">
+        <mat-icon class="me-1">store</mat-icon> Volver a la tienda
+      </a>
+    </div>
+  </ng-template>
+</div>
+ 

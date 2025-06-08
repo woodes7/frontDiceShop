@@ -1,0 +1,26 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card w-100 p-4" style="max-width: 500px;">
+        <h4 class="text-center mb-4">
+      {{ isEdit ? 'Editar categoria' : 'Nueva categoria' }}
+    </h4>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error *ngIf="form.get('name')?.hasError('required')">
+        El nombre es obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">
+      {{ isEdit ? 'Actualizar' : 'Crear' }}
+    </button>
+  </form>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<header class="d-flex justify-content-between align-items-center p-3 bg-light border-bottom">
+  <!-- Logo e izquierda -->
+  <div class="d-flex align-items-center">
+    <img src="../../../../assets/logo.png" alt="Logo" width="40" height="40" class="me-2" />
+    <a routerLink="/dashboard" class="text-decoration-none text-dark">
+      <h4 class="m-0">Dice Shop</h4>
+    </a>
+  </div>
+
+  <!-- Parte derecha -->
+  <div class="d-flex align-items-center gap-4">
+    <!-- Icono carrito -->
+    <a *ngIf="currentUser != null" mat-icon-button [routerLink]="['/views/cart']" matTooltip="Carrito"
+      aria-label="Ir al carrito">
+      <mat-icon>shopping_cart</mat-icon>
+    </a>
+
+    <!-- Usuario -->
+    <ng-container *ngIf="currentUser; else loginLink">
+      <button mat-button [matMenuTriggerFor]="userMenu" class="text-capitalize" matTooltip="Opciones de cuenta">
+        {{ currentUser.fullName || 'Usuario' }}
+      </button>
+
+      <mat-menu #userMenu="matMenu">
+        @if(isUserAdmin){
+        <button mat-menu-item [routerLink]="['/admin']">
+          <mat-icon>admin_panel_settings</mat-icon>
+          <span>Administración</span>
+        </button>
+        }
+        <button mat-menu-item [routerLink]="['/views/user']">
+          <mat-icon>account_circle</mat-icon>
+          <span>Cuenta</span>
+        </button>
+        <button mat-menu-item [routerLink]="['/views/payment']">
+          <mat-icon>credit_card</mat-icon>
+          <span>Pago</span>
+        </button>
+        <button mat-menu-item [routerLink]="['/views/billingAddress']">
+          <mat-icon>home</mat-icon>
+          <span>Dirección</span>
+        </button>
+        <button mat-menu-item [routerLink]="['/views/order']">
+          <mat-icon>receipt_long</mat-icon>
+          <span>Pedido</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Salir</span>
+        </button>
+      </mat-menu>
+    </ng-container>
+
+    <!-- Si no está logueado -->
+    <ng-template #loginLink>
+      <a mat-button color="primary" [routerLink]="['/pages/login']">Iniciar sesión</a>
+    </ng-template>
+  </div>
+</header>

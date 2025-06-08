@@ -1,0 +1,80 @@
+<mat-card class="p-3">
+  <h3 class="mb-3">Carrito de compra</h3>
+
+  <mat-table [dataSource]="items" class="mat-elevation-z8 w-100">
+
+    <!-- Checkbox -->
+    <ng-container matColumnDef="select">
+      <mat-header-cell *matHeaderCellDef> Seleccionar </mat-header-cell>
+      <mat-cell *matCellDef="let item">
+        <mat-checkbox [checked]="item.active === true" (change)="toggleSelection(item)">
+        </mat-checkbox>
+
+      </mat-cell>
+    </ng-container>
+
+    <!-- Producto -->
+    <ng-container matColumnDef="productName">
+      <mat-header-cell *matHeaderCellDef> Producto </mat-header-cell>
+      <mat-cell *matCellDef="let item"> {{ item.productName }} </mat-cell>
+    </ng-container>
+
+    <!-- Cantidad (con botones) -->
+    <ng-container matColumnDef="quantity">
+      <mat-header-cell *matHeaderCellDef> Cantidad </mat-header-cell>
+      <mat-cell *matCellDef="let item">
+        <div class="d-flex align-items-center gap-2">
+          <button mat-mini-button color="primary" (click)="changeQuantity(item, -1)"
+            [disabled]="item.quantity <= 1">−</button>
+          {{ item.quantity }}
+          <button mat-mini-button color="primary" (click)="changeQuantity(item, 1)"
+            [disabled]="item.quantity >= 99">+</button>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Precio Unitario -->
+    <ng-container matColumnDef="unitPrice">
+      <mat-header-cell *matHeaderCellDef> Precio unitario </mat-header-cell>
+      <mat-cell *matCellDef="let item"> {{ item.unitPrice | currency }} </mat-cell>
+    </ng-container>
+
+    <!-- Subtotal -->
+    <ng-container matColumnDef="subtotal">
+      <mat-header-cell *matHeaderCellDef> Subtotal </mat-header-cell>
+      <mat-cell *matCellDef="let item">
+        {{ item.unitPrice * item.quantity | currency }}
+      </mat-cell>
+    </ng-container>
+
+    <!-- Eliminar -->
+<ng-container matColumnDef="delete">
+  <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+  <mat-cell *matCellDef="let item">
+    <button mat-icon-button color="warn" (click)="deleteItem(item)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-cell>
+</ng-container>
+
+
+   <mat-header-row *matHeaderRowDef="['select', 'productName', 'quantity', 'unitPrice', 'subtotal', 'delete']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['select', 'productName', 'quantity', 'unitPrice', 'subtotal', 'delete']"></mat-row>
+  </mat-table>
+
+<!-- Total y botones -->
+<div class="d-flex justify-content-between align-items-center mt-4">
+  <div>
+    <strong>Total:</strong> {{ total | currency }}
+  </div>
+  <div>
+    <button mat-stroked-button color="primary" class="me-2" (click)="returnStore()">
+      <mat-icon class="me-1">arrow_back</mat-icon> Volver
+    </button>
+    <button mat-raised-button color="accent" [disabled]="selectedItems.length === 0" (click)="goToOrder()">
+      Tramitar pedido ({{ selectedItems.length }})
+    </button>
+  </div>
+</div>
+
+</mat-card>

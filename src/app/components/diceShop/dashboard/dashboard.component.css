@@ -1,0 +1,8 @@
+.product-img {
+  height: 200px;              /* Limita la altura */
+  width: 100%;                /* Que ocupe el ancho del contenedor */
+  object-fit: cover;          /* Rellena sin deformar */
+  object-position: center;    /* Centra la imagen */
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}

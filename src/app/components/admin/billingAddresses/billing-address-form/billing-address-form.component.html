@@ -1,0 +1,88 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card w-100 p-4" style="max-width: 700px;">
+    <h4 class="text-center mb-4">
+      {{ isEdit ? 'Editar Dirección de Facturación' : 'Nueva Dirección de Facturación' }}
+    </h4>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>País</mat-label>
+            <input matInput formControlName="country" required />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Provincia/Estado</mat-label>
+            <input matInput formControlName="state" required />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Ciudad</mat-label>
+            <input matInput formControlName="city" required />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Calle</mat-label>
+            <input matInput formControlName="street" required />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Nº</mat-label>
+            <input matInput formControlName="streetNumber" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Piso</mat-label>
+            <input matInput formControlName="floor" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Puerta</mat-label>
+            <input matInput formControlName="door" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Bloque</mat-label>
+            <input matInput formControlName="block" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Código Postal</mat-label>
+            <input matInput formControlName="postalCode" required />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <mat-checkbox formControlName="isPrimary" class="w-100 mb-3">
+            ¿Es la dirección principal?
+          </mat-checkbox>
+
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-secondary" (click)="onBack()">Volver</button>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+          {{ isEdit ? 'Actualizar' : 'Crear' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

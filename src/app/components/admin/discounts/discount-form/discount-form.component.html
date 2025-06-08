@@ -1,0 +1,67 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card w-100 p-4" style="max-width: 500px;">
+
+  <h2 class="text-center mb-4">
+    {{ isEdit ? 'Editar Descuento' : 'Nuevo Descuento' }}
+  </h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Código</mat-label>
+      <input matInput formControlName="code" />
+      <mat-error *ngIf="form.get('code')?.hasError('required')">
+        El código es obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Importe</mat-label>
+      <input matInput type="number" formControlName="amount" />
+      <mat-error *ngIf="form.get('amount')?.hasError('required')">
+        El importe es obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Tipo de Descuento</mat-label>
+      <mat-select formControlName="discountType">
+        <mat-option value="PERCENTAGE">Porcentaje</mat-option>
+        <mat-option value="FIXED">Fijo</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('discountType')?.hasError('required')">
+        El tipo de descuento es obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Fecha de Inicio</mat-label>
+      <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Fecha de Fin</mat-label>
+      <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>¿Activo?</mat-label>
+      <mat-select formControlName="active">
+        <mat-option [value]="true">Sí</mat-option>
+        <mat-option [value]="false">No</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="d-flex justify-content-between mt-4">
+      <button mat-stroked-button color="warn" type="button" (click)="onBack()">Volver</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        {{ isEdit ? 'Actualizar' : 'Crear' }}
+      </button>
+    </div>
+  </form>
+  </div>
+</div>

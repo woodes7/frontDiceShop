@@ -1,0 +1,37 @@
+<mat-card class="p-4" style="max-width: 600px; margin: 0 auto;">
+
+  <h2 class="text-center mb-4">Registro</h2>
+
+  <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+    <mat-form-field class="w-100 mb-3" appearance="fill">
+      <mat-label>Nombre completo</mat-label>
+      <input matInput [(ngModel)]="user.fullName" name="fullName" required>
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mb-3" appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="user.email" name="email" required type="email">
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mb-3" appearance="fill">
+      <mat-label>Teléfono</mat-label>
+      <input matInput [(ngModel)]="user.phone" name="phone">
+    </mat-form-field>
+
+    <mat-form-field class="w-100 mb-3" appearance="fill">
+      <mat-label>Contraseña</mat-label>
+      <input matInput [(ngModel)]="user.password" name="password" required type="password">
+    </mat-form-field>
+
+    <!-- Botones alineados igual que en login -->
+    <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!registerForm.valid">
+        Registrarse
+      </button>
+      <a mat-button color="accent" [routerLink]="['/pages/login']">
+        Ya tengo cuenta
+      </a>
+    </div>
+  </form>
+
+</mat-card>

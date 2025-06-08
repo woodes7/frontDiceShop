@@ -1,0 +1,37 @@
+<!-- layout-admin.component.html -->
+<div class="d-flex">
+  <!-- Sidebar -->
+  <nav class="bg-dark text-white p-3 vh-100" style="width: 250px;">
+    <h5 class="mb-4">Panel Admin</h5>
+    <ul class="nav flex-column">
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" routerLink="/admin/products" routerLinkActive="fw-bold">Productos</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" routerLink="/admin/categories" routerLinkActive="fw-bold">Categorías</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" routerLink="/admin/users" routerLinkActive="fw-bold">Usuarios</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" routerLink="/admin/orders" routerLinkActive="fw-bold">Pedidos</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" routerLink="/admin/discounts" routerLinkActive="fw-bold">Descuentos</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" routerLink="/admin/billingAddresses" routerLinkActive="fw-bold">Direcciones de facturación</a>
+      </li>
+       <li class="nav-item mb-2">
+        <a class="nav-link text-white" routerLink="/admin/coupons" routerLinkActive="fw-bold">Cupones</a>
+      </li>
+
+      <!-- Añade más enlaces si lo necesitas -->
+    </ul>
+  </nav>
+
+  <!-- Contenido principal -->
+  <div class="flex-grow-1 p-4">
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -1,0 +1,144 @@
+<div class="container mt-1">
+
+    <!-- Formulario en una Card -->
+    <mat-card class="p-4 mb-1" style="max-width: 800px; margin: 0 auto;">
+        <h4 class="text-center mb-4">
+            {{ isEdit ? 'Editar Dirección de Facturación' : 'Nueva Dirección de Facturación' }}
+        </h4>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>País</mat-label>
+                        <input matInput formControlName="country" required />
+                        <mat-error *ngIf="form.get('country')?.invalid">Campo requerido</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Provincia/Estado</mat-label>
+                        <input matInput formControlName="state" required />
+                        <mat-error *ngIf="form.get('state')?.invalid">Campo requerido</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Ciudad</mat-label>
+                        <input matInput formControlName="city" required />
+                        <mat-error *ngIf="form.get('city')?.invalid">Campo requerido</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Calle</mat-label>
+                        <input matInput formControlName="street" required />
+                        <mat-error *ngIf="form.get('street')?.invalid">Campo requerido</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Nº</mat-label>
+                        <input matInput formControlName="streetNumber" />
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Piso</mat-label>
+                        <input matInput formControlName="floor" />
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Puerta</mat-label>
+                        <input matInput formControlName="door" />
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Bloque</mat-label>
+                        <input matInput formControlName="block" />
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Código Postal</mat-label>
+                        <input matInput formControlName="postalCode" required />
+                        <mat-error *ngIf="form.get('postalCode')?.invalid">Campo requerido</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-6 mb-3 d-flex align-items-center">
+                    <mat-checkbox formControlName="isPrimary">
+                        ¿Es la dirección principal?
+                    </mat-checkbox>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <button type="button" class="btn btn-secondary" (click)="onBack()">Volver</button>
+                <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+                    {{ isEdit ? 'Actualizar' : 'Crear' }}
+                </button>
+            </div>
+        </form>
+
+    </mat-card>
+
+<mat-card class="p-4" style="max-width: 800px; margin: 0 auto;">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+  <h5 class="mb-0">Mis direcciones de facturación</h5>
+  <button mat-mini-fab color="primary" aria-label="Nueva Dirección" (click)="createNewAddress()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+
+  <mat-table [dataSource]="addresses" *ngIf="addresses.length > 0; else noAddresses" class="w-100 mat-elevation-z1">
+
+    <!-- Dirección -->
+    <ng-container matColumnDef="address">
+      <mat-header-cell *matHeaderCellDef> Dirección </mat-header-cell>
+      <mat-cell *matCellDef="let addr">
+        {{ addr.street }} {{ addr.streetNumber }}, {{ addr.city }} ({{ addr.postalCode }})<br>
+        <span class="text-muted">{{ addr.state }}, {{ addr.country }}</span>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Principal -->
+    <ng-container matColumnDef="principal">
+      <mat-header-cell *matHeaderCellDef> Principal </mat-header-cell>
+      <mat-cell *matCellDef="let addr">
+        <mat-chip *ngIf="addr.isPrimary" color="primary">Sí</mat-chip>
+        <span *ngIf="!addr.isPrimary">No</span>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Acciones -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
+      <mat-cell *matCellDef="let addr">
+        <button mat-stroked-button color="accent" (click)="editInline(addr)">
+          <mat-icon>edit</mat-icon> Editar
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['address', 'principal', 'actions']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['address', 'principal', 'actions']"></mat-row>
+  </mat-table>
+
+  <ng-template #noAddresses>
+    <p class="text-muted">No tienes direcciones guardadas.</p>
+  </ng-template>
+</mat-card>
+
+
+</div>
