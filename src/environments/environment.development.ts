@@ -1,3 +1,4 @@
 export const environment = {
-    apiURL: 'https://localhost:44374/api'
+    apiURL: 'https://api.pablorg.xyz/api',
+    production: false
 };
