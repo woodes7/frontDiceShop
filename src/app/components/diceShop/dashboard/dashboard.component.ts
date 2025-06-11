@@ -19,13 +19,13 @@ export class DashboardComponent implements OnInit {
   totalItems = 0;
   pageSize = 6;
   pageNumber = 1;
-
+  discount = null;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadCategories();
@@ -44,8 +44,25 @@ export class DashboardComponent implements OnInit {
 
         this.products = result.items;
         this.totalItems = result.totalCount;
- 
+
       });
+  }
+  getDiscountedPrice(product: ProductDto): number {
+    if (!product.discount || !product.discount.active) {
+      return product.price ?? 0;
+    }
+
+    const discount = product.discount;
+
+    if (discount.discountType === 'PERCENTAGE') {
+      return (product.price ?? 0) * (1 - (discount.amount ?? 0) / 100);
+    }
+
+    if (discount.discountType === 'FIXED') {
+      return Math.max((product.price ?? 0) - (discount.amount ?? 0), 0);
+    }
+
+    return product.price ?? 0;
   }
 
   onCategoryChange(): void {
@@ -65,4 +82,7 @@ export class DashboardComponent implements OnInit {
     this.pageSize = event.pageSize;
     this.loadProducts();
   }
+
+
+
 }

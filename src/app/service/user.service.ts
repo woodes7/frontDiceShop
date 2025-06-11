@@ -34,9 +34,6 @@ export class UserService {
     return this.http.get<UserDto>(`${this.apiUrl}/user/${id}`);
   }
 
-  getUserByEmail(email: string): Observable<UserDto> {
-    return this.http.get<UserDto>(`${this.apiUrl}/getUserByEmail?email=${email}`);
-  }
 
   checkUser(email: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/checkUser?email=${email}`);

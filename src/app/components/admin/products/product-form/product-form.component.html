@@ -69,14 +69,16 @@
         <mat-datepicker #picker2></mat-datepicker>
       </mat-form-field>
 
-     <mat-form-field appearance="fill" class="w-100 mb-3">
-        <mat-label>Descuentos</mat-label>
-        <mat-select formControlName="discountId">
-          @for (discount of discounts; track discount) {
-          <mat-option [value]="discount.id">{{discount.discountType}}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
+ <mat-form-field appearance="fill" class="w-100 mb-3">
+  <mat-label>Descuentos</mat-label>
+  <mat-select formControlName="discountId">
+    @for (discount of discounts; track discount) {
+      <mat-option [value]="discount.id">
+        {{ discount.discountType }} - {{ discount.code }}
+      </mat-option>
+    }
+  </mat-select>
+</mat-form-field>
 
 
       <div class="d-flex justify-content-between mt-4">

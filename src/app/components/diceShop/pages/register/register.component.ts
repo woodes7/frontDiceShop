@@ -33,11 +33,10 @@ export class RegisterComponent {
     this.getUser();
   }
   getUser() {
-    this.userService.getUserByEmail(this.user.email).subscribe(
+    this.userService.checkUser(this.user.email).subscribe(
       {
         next: (response) => {
-          if (response) {
-            if (!response.emailConfirmed) {
+          if (!response) {
               Swal.fire({
                 icon: 'warning',
                 title: 'Ya existe un usuario no confirmado',
@@ -54,7 +53,7 @@ export class RegisterComponent {
                       }
                     );
                 });
-            }
+            
           } else
             this.register();
         }

@@ -1,3 +1,5 @@
+import { DiscountDto } from "./DiscountDto";
+
 export class ProductDto {
   id: number;
   name: string;
@@ -11,5 +13,5 @@ export class ProductDto {
   releaseDate: Date | null;
   discountId: number | null;
   categoryName: string;
-  discountCode: string;
+  discount:DiscountDto;
 }

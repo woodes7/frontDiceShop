@@ -10,9 +10,26 @@
       <div class="col-lg-7">
         <div class="d-flex flex-column gap-3">
           <h2 class="fw-bold" style="font-size: 2rem;">{{ product.name }}</h2>
-          <div>
-            <span class="fs-4 fw-semibold text-primary">{{ product.price | currency }}</span>
-          </div>
+<div>
+  <ng-container *ngIf="product.discount?.active; else noDiscount">
+    <span class="text-muted text-decoration-line-through fs-5 me-2">
+      {{ product.price | currency:'EUR':'symbol':'1.2-2' }}
+    </span>
+    <span class="fs-4 fw-bold text-danger">
+      {{ getDiscountedPrice() | currency:'EUR':'symbol':'1.2-2' }}
+    </span>
+    <span
+      class="badge bg-danger text-white ms-2"
+      *ngIf="product.discount.discountType === 'PERCENTAGE'">
+      -{{ product.discount.amount }}%
+    </span>
+  </ng-container>
+  <ng-template #noDiscount>
+    <span class="fs-4 fw-semibold text-primary">
+      {{ product.price | currency:'EUR':'symbol':'1.2-2' }}
+    </span>
+  </ng-template>
+</div>
           <p class="mb-2 text-muted" style="font-size: 1.07rem;">{{ product.description }}</p>
           <div>
             <span class="badge bg-light text-dark border me-2">

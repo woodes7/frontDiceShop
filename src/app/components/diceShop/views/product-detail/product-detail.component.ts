@@ -40,6 +40,18 @@ export class ProductDetailComponent implements OnInit {
     private authService: AuthService
   ) { }
 
+  ngOnInit(): void {
+
+    this.getReviewsByProductOfUser();
+    this.productId = Number(this.route.snapshot.paramMap.get('id'));
+    this.productService.getProductById(this.productId).subscribe(product => {
+      this.product = product;
+      console.log(product)
+      this.loadReviews();
+      console.log(this.noReviws);
+    });
+  }
+
   getReviewsByProductOfUser() {
     this.authService.currentUser$.subscribe({
       next: (response) => {
@@ -61,17 +73,22 @@ export class ProductDetailComponent implements OnInit {
       }
     });
   }
+  getDiscountedPrice(): number {
+    if (!this.product?.discount || !this.product.discount.active) {
+      return this.product.price ?? 0;
+    }
 
+    const { discountType, amount } = this.product.discount;
 
-  ngOnInit(): void {
-    console.log("asdfasdf")
-    this.getReviewsByProductOfUser();
-    this.productId = Number(this.route.snapshot.paramMap.get('id'));
-    this.productService.getProductById(this.productId).subscribe(product => {
-      this.product = product;
-      this.loadReviews();
-      console.log(this.noReviws);
-    });
+    if (discountType === 'PERCENTAGE') {
+      return (this.product.price ?? 0) * (1 - (amount ?? 0) / 100);
+    }
+
+    if (discountType === 'FIXED') {
+      return Math.max((this.product.price ?? 0) - (amount ?? 0), 0);
+    }
+
+    return this.product.price ?? 0;
   }
 
   onAddToCart(): void {
@@ -101,7 +118,7 @@ export class ProductDetailComponent implements OnInit {
   loadReviews() {
     this.productReviewService.getReviewsByProductId(this.productId).subscribe({
       next: (res) => {
-        
+
         if (res.length != 0)
           this.reviews = res;
         else
@@ -122,11 +139,18 @@ export class ProductDetailComponent implements OnInit {
     item.productId = this.product.id;
     item.quantity = this.quantity;
     item.shoppingCartId = cartId;
+    
+  // Aplicar descuento si existe y está activo
+  if (this.product.discount && this.product.discount.active) {
+     item.unitPrice = this.getDiscountedPrice(); 
+    return item;
+  }
     item.unitPrice = this.product.price!;
     item.active = true;
 
     return item;
   }
+
 
   addCart(cart: ShoppingcartDto) {
     this.shoppingCartService.addShoppingCart(cart).subscribe(

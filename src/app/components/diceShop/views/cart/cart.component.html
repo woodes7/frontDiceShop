@@ -34,16 +34,29 @@
     </ng-container>
 
     <!-- Precio Unitario -->
-    <ng-container matColumnDef="unitPrice">
-      <mat-header-cell *matHeaderCellDef> Precio unitario </mat-header-cell>
-      <mat-cell *matCellDef="let item"> {{ item.unitPrice | currency }} </mat-cell>
+<ng-container matColumnDef="unitPrice">
+  <mat-header-cell *matHeaderCellDef> Precio unitario </mat-header-cell>
+  <mat-cell *matCellDef="let item">
+    <ng-container *ngIf="item.originalPrice && item.unitPrice < item.originalPrice; else normalPrice">
+      <span class="text-muted text-decoration-line-through me-1">
+        {{ item.originalPrice | currency:'EUR':'symbol':'1.2-2' }}
+      </span>
+      <span class="text-danger fw-semibold">
+        {{ item.unitPrice | currency:'EUR':'symbol':'1.2-2' }}
+      </span>
     </ng-container>
+    <ng-template #normalPrice>
+      {{ item.unitPrice | currency:'EUR':'symbol':'1.2-2' }}
+    </ng-template>
+  </mat-cell>
+</ng-container>
+
 
     <!-- Subtotal -->
     <ng-container matColumnDef="subtotal">
       <mat-header-cell *matHeaderCellDef> Subtotal </mat-header-cell>
       <mat-cell *matCellDef="let item">
-        {{ item.unitPrice * item.quantity | currency }}
+        {{ item.unitPrice * item.quantity | currency:'EUR':'symbol':'1.2-2' }}
       </mat-cell>
     </ng-container>
 
@@ -65,7 +78,7 @@
 <!-- Total y botones -->
 <div class="d-flex justify-content-between align-items-center mt-4">
   <div>
-    <strong>Total:</strong> {{ total | currency }}
+    <strong>Total:</strong> {{ total | currency:'EUR':'symbol':'1.2-2' }}
   </div>
   <div>
     <button mat-stroked-button color="primary" class="me-2" (click)="returnStore()">

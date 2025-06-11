@@ -1,17 +1,15 @@
-
 <div class="container mt-5">
   <div class="d-flex gap-3 align-items-center mb-4">
     <div class="flex-shrink-0">
       <mat-form-field appearance="fill">
         <mat-label>Categoría</mat-label>
         <mat-select [(value)]="selectedCategory" (selectionChange)="onCategoryChange()">
-          <mat-option [value]="0">Todas</mat-option> <!-- Puedes usar null o 0 -->
+          <mat-option [value]="0">Todas</mat-option>
           <mat-option *ngFor="let category of categories" [value]="category.id">
             {{ category.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-
     </div>
 
     <div class="flex-grow-1">
@@ -24,13 +22,37 @@
 
   <div class="row">
     <div class="col-md-4 mb-4" *ngFor="let product of products">
-      <div class="card h-100 product-card" >
+      <div class="card h-100 product-card">
         <a [routerLink]="['/views/product', product.id]" class="card h-100 text-decoration-none text-dark"
           style="cursor: pointer;">
           <img [src]="product.image" class="card-img-top product-img" alt="{{ product.name }}">
+
           <div class="card-body">
-            <h5 class="card-title">{{ product.name }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ product.price | currency }}</h6>
+            <h5 class="card-title d-flex justify-content-between align-items-center">
+              {{ product.name }}
+              <span
+                class="badge bg-danger text-white"
+                *ngIf="product.discount?.active && product.discount?.discountType === 'PERCENTAGE'">
+                -{{ product.discount.amount }}%
+              </span>
+            </h5>
+
+            <h6 class="card-subtitle mb-2">
+              <ng-container *ngIf="product.discount?.active; else noDiscount">
+                <span class="text-muted text-decoration-line-through me-2">
+                  {{ product.price | currency:'EUR':'symbol':'1.2-2' }}
+                </span>
+                <span class="fw-bold text-danger">
+                  {{ getDiscountedPrice(product) | currency:'EUR':'symbol':'1.2-2' }}
+                </span>
+              </ng-container>
+              <ng-template #noDiscount>
+                <span class="text-muted">
+                  {{ product.price | currency:'EUR':'symbol':'1.2-2' }}
+                </span>
+              </ng-template>
+            </h6>
+
             <p class="card-text">{{ product.description }}</p>
           </div>
         </a>
@@ -39,7 +61,10 @@
   </div>
 
   <div class="d-flex justify-content-center mt-4">
-    <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="[3, 6, 12]"
+    <mat-paginator
+      [length]="totalItems"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[3, 6, 12]"
       (page)="onPageChange($event)">
     </mat-paginator>
   </div>

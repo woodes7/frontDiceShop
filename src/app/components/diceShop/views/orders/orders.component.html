@@ -35,7 +35,7 @@
 
       <ng-container matColumnDef="subtotal">
         <mat-header-cell *matHeaderCellDef> Subtotal </mat-header-cell>
-        <mat-cell *matCellDef="let detail"> {{detail.subtotal | currency:'EUR'}} </mat-cell>
+        <mat-cell *matCellDef="let detail"> {{detail.subtotal | currency:'EUR':'symbol':'1.2-2' }} </mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="['productName', 'productDescription', 'quantity', 'unitPrice', 'subtotal']"></mat-header-row>

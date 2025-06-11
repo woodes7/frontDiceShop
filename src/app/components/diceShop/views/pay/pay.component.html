@@ -12,8 +12,8 @@
       <p class="mb-0">Cantidad: {{ item.quantity }}</p>
     </div>
     <div class="text-end">
-      <p class="mb-0">{{ item.unitPrice | currency }}</p>
-      <small class="text-muted">Subtotal: {{ item.unitPrice * item.quantity | currency }}</small>
+      <p class="mb-0">{{ item.unitPrice | currency:'EUR':'symbol':'1.2-2' }}</p>
+      <small class="text-muted">Subtotal: {{ item.unitPrice * item.quantity | currency:'EUR':'symbol':'1.2-2' }} </small>
     </div>
   </div>
 </div>
