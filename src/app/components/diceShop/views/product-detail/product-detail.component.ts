@@ -29,7 +29,7 @@ export class ProductDetailComponent implements OnInit {
   hasReviewed: boolean = false;
   isEditing: boolean = false;
   existingReview: ProductreviewDto;
-
+  noReviws: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
@@ -64,11 +64,13 @@ export class ProductDetailComponent implements OnInit {
 
 
   ngOnInit(): void {
+    console.log("asdfasdf")
     this.getReviewsByProductOfUser();
     this.productId = Number(this.route.snapshot.paramMap.get('id'));
     this.productService.getProductById(this.productId).subscribe(product => {
       this.product = product;
       this.loadReviews();
+      console.log(this.noReviws);
     });
   }
 
@@ -97,8 +99,14 @@ export class ProductDetailComponent implements OnInit {
   }
 
   loadReviews() {
-    this.productReviewService.getReviewsByProductId(this.productId).subscribe(res => {
-      this.reviews = res;
+    this.productReviewService.getReviewsByProductId(this.productId).subscribe({
+      next: (res) => {
+        
+        if (res.length != 0)
+          this.reviews = res;
+        else
+          this.noReviws = true;
+      }
     });
   }
 
@@ -194,7 +202,7 @@ export class ProductDetailComponent implements OnInit {
     this.isEditing = true;
   }
 
-  onCancelEdit(){
+  onCancelEdit() {
     this.isEditing = false;
   }
 
