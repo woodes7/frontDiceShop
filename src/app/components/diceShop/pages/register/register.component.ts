@@ -36,7 +36,8 @@ export class RegisterComponent {
     this.userService.checkUser(this.user.email).subscribe(
       {
         next: (response) => {
-          if (!response) {
+          if (response.email != "") {
+            if(response.confirmed == false)
               Swal.fire({
                 icon: 'warning',
                 title: 'Ya existe un usuario no confirmado',

@@ -63,8 +63,8 @@ export class LoginComponent implements OnInit {
       this.userService.checkUser(this.email).subscribe(
         {
           next: (response) => {
-            if (response) {
-              if (!response) {
+              if (response.email != "") {
+                if(response.confirmed == false){
                 Swal.fire({
                   icon: 'warning',
                   title: 'No ha confirmado su cuenta',
@@ -79,7 +79,7 @@ export class LoginComponent implements OnInit {
               }else
                 this.login();
             } else
-              this.login();
+              this.errorMessage = 'Credenciales incorrectas.';
           }
         }
       );

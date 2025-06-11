@@ -35,8 +35,8 @@ export class UserService {
   }
 
 
-  checkUser(email: string): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/checkUser?email=${email}`);
+  checkUser(email: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/checkUser?email=${email}`);
   }
 
   // Crear nuevo usuario
