@@ -47,10 +47,11 @@ export class LoginComponent implements OnInit {
 
   login(){
      this.userService.login(this.email, this.password).subscribe({
-      next: (user: UserDto) => {
-        user.password = "";
-        this.authService.setUser(user); // Aquí notificas al resto
-        this.isAdmin(user);
+      next: (response: any) => {
+        response.password = "";
+        this.authService.setUser(response.user); // Aquí notificas al resto
+        this.authService.setToken(response.token);
+        this.isAdmin(response.user);
       },
       error: () => {
         this.errorMessage = 'Credenciales incorrectas.';
@@ -59,12 +60,11 @@ export class LoginComponent implements OnInit {
   }
 
   getUser() {
-      this.userService.getUserByEmail(this.email).subscribe(
+      this.userService.checkUser(this.email).subscribe(
         {
           next: (response) => {
             if (response) {
-              console.log(response);
-              if (!response.emailConfirmed) {
+              if (!response) {
                 Swal.fire({
                   icon: 'warning',
                   title: 'No ha confirmado su cuenta',

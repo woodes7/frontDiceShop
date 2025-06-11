@@ -38,6 +38,10 @@ export class UserService {
     return this.http.get<UserDto>(`${this.apiUrl}/getUserByEmail?email=${email}`);
   }
 
+  checkUser(email: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/checkUser?email=${email}`);
+  }
+
   // Crear nuevo usuario
   addUser(user: UserDto): Observable<boolean> {
     return this.http.post<boolean>(`${this.apiUrl}/add`, user);
@@ -54,26 +58,25 @@ export class UserService {
   }
 
   // inicio sesión
-  login(email: string, password: string): Observable<UserDto> {
+  login(email: string, password: string): Observable<any> {
     let params = new HttpParams()
       .set('email', email)
       .set('pass', password);
-    return this.http.get<UserDto>(`${this.apiUrl}/login`, { params });
+    return this.http.get<any>(`${this.apiUrl}/login`, { params });
   }
 
-  
-register(user: UserDto): Observable<boolean> {
-  return this.http.post<boolean>(`${this.apiUrl}/register`, user).pipe(
-    switchMap(success => {
-      if (success) {
-        return this.sendConfirmationEmail(user.email);
-      } else {
-        throw new Error('Error al registrar usuario');
-      }
-    })
-  );
-}
 
+  register(user: UserDto): Observable<boolean> {
+    return this.http.post<boolean>(`${this.apiUrl}/register`, user).pipe(
+      switchMap(success => {
+        if (success) {
+          return this.sendConfirmationEmail(user.email);
+        } else {
+          throw new Error('Error al registrar usuario');
+        }
+      })
+    );
+  }
 
   changePassword(userId: number, newPassword: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/change-password`, {
@@ -85,32 +88,23 @@ register(user: UserDto): Observable<boolean> {
   forgotPassword(email: string): Observable<any> {
     return this.http.post(`${environment.apiURL}/token/generateToken?email=${email}`, {});
   }
-  
+
   resetPasswordWithToken(token: string, newPassword: string): Observable<any> {
-  console.log("4");
+    const params = new HttpParams()
+      .set('tokenValue', token)
+      .set('newPassword', newPassword);
+    return this.http.post(`${environment.apiURL}/token/reset-password`, null, { params });
+  }
 
-  const params = new HttpParams()
-    .set('tokenValue', token)
-    .set('newPassword', newPassword);
-  console.log("5");
-  return this.http.post(`${environment.apiURL}/token/reset-password`, null, { params });
-}
-
-sendConfirmationEmail(email: string): Observable<boolean> {
-  console.log("aqui1")
-  const params = new HttpParams().set('email', email);
-  return this.http.post<boolean>(`${this.apiUrl}/send-confirmation`, null, { params });
-}
+  sendConfirmationEmail(email: string): Observable<boolean> {
+    const params = new HttpParams().set('email', email);
+    return this.http.post<boolean>(`${this.apiUrl}/send-confirmation`, null, { params });
+  }
 
   confirmEmail(token: string) {
-      console.log("aqui2")
     const params = new HttpParams().set('token', token);
     return this.http.post(`${this.apiUrl}/confirm-email`, null, { params });
   }
-
-  
-
-
 }
 
 

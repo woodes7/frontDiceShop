@@ -27,6 +27,7 @@ import { PaymentSuccessComponent } from './payment-success/payment-success.compo
 import { OrdersComponent } from './orders/orders.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatTooltipModule,
     MatDividerModule,
     MatChipsModule,
+    MatSelectModule,
     MatListModule,
     MatIconModule,
     MatProgressSpinnerModule,

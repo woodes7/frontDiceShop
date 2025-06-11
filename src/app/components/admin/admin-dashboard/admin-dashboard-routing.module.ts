@@ -66,15 +66,7 @@ const routes: Routes = [
           import('../billingAddresses/billing-address.module').then(
             (m) => m.BillingAddressModule
           )
-      },
-       {
-        path: 'coupons',
-        canActivate: [adminGuard],
-        loadChildren: () =>
-          import('../coupons/coupon.module').then(
-            (m) => m.CouponModule
-          )
-      },
+      },       
     ]
   }
 ];

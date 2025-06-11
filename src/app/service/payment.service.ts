@@ -19,7 +19,6 @@ export class PaymentService {
     );
   }
   postPurchase(userId: number): Observable<boolean> {
-    console.log(this.apiUrl)
     return this.http.get<boolean>(`${this.apiUrl}/postPurchase?userId=${userId}`)
   }
 

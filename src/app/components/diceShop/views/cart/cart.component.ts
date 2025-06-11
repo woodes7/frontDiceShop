@@ -38,7 +38,6 @@ export class CartComponent implements OnInit {
   getItemsOfCart(cartId: number) {
     this.shoppingCartItemService.getItemsByCartId(cartId).subscribe({
       next: (response) => {
-        console.log(response)
         this.items = response;
         this.calculateTotal();
       }

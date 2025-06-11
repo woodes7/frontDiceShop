@@ -41,18 +41,16 @@ export class DashboardComponent implements OnInit {
   loadProducts(): void {
     this.productService.getProducts(this.pageNumber, this.pageSize, this.selectedCategory, this.searchTerm)
       .subscribe(result => {
-        console.log("carga")
+
         this.products = result.items;
         this.totalItems = result.totalCount;
-        console.log(result.items[0].name)
+ 
       });
   }
 
   onCategoryChange(): void {
     this.pageNumber = 1;
-    console.log(this.selectedCategory)
     this.paginator.firstPage();
-    console.log(this.selectedCategory)
     this.loadProducts();
   }
 

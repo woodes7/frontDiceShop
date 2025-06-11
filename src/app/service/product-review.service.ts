@@ -10,10 +10,10 @@ import { environment } from '../../environments/environment.development';
 export class ProductReviewService {
   private apiUrl = `${environment.apiURL}/ProductReview`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getProductReview(id: number): Observable<ProductreviewDto> {
-    return this.http.get<ProductreviewDto>(`${this.apiUrl}/productreview/${id}`);
+    return this.http.get<ProductreviewDto>(`${this.apiUrl}/${id}`);
   }
   getProductReviews(): Observable<ProductreviewDto[]> {
     return this.http.get<ProductreviewDto[]>(`${this.apiUrl}/prodcutReviews`);
@@ -24,7 +24,7 @@ export class ProductReviewService {
   }
 
   updateProductReview(review: ProductreviewDto): Observable<boolean> {
-    return this.http.put<boolean>(`${this.apiUrl}/edit`, review);
+    return this.http.post<boolean>(`${this.apiUrl}/edit`, review);
   }
 
   deleteProductReview(id: number): Observable<boolean> {
@@ -32,4 +32,14 @@ export class ProductReviewService {
       params: { id: id.toString() }
     });
   }
+
+  getReviewsByProductId(productId: number): Observable<ProductreviewDto[]> {
+    return this.http.get<ProductreviewDto[]>(`${this.apiUrl}/byProduct/${productId}`);
+  }
+
+  getReviewsByProductIdOfUser(productId: number, userId: number): Observable<ProductreviewDto> {
+    return this.http.get<ProductreviewDto>(`${this.apiUrl}/byProductOfUser?productId=${productId}&userId=${userId}`);
+  }
+
+
 }

@@ -21,9 +21,7 @@ export class ChangePasswordComponent implements OnInit {
   
 
   ngOnInit(): void {
-     console.log("1")
     this.token = this.route.snapshot.queryParamMap.get('token') ?? '';
-    console.log(this.token )
   }
   
 onChangePassword(): void {

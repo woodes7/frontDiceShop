@@ -1,47 +1,105 @@
-<div class="container mt-5" *ngIf="product">
-  <mat-card class="p-4">
-    <div class="row g-4">
-      <!-- Imagen del producto -->
-      <div class="col-md-5 text-center">
-        <img [src]="product.image" class="img-fluid rounded" alt="{{ product.name }}" style="max-height: 400px;">
+<div class="container py-5" *ngIf="product">
+  <mat-card class="shadow-lg p-4" style="border-radius: 18px;">
+    <div class="row g-5 align-items-center">
+      <!-- Imagen -->
+      <div class="col-lg-5 text-center mb-4 mb-lg-0">
+        <img [src]="product.image" class="img-fluid rounded shadow" alt="{{ product.name }}"
+          style="max-height: 370px; object-fit: contain;">
       </div>
-
-      <!-- Detalle del producto -->
-      <div class="col-md-7">
+      <!-- Detalle -->
+      <div class="col-lg-7">
         <div class="d-flex flex-column gap-3">
-          <h2>{{ product.name }}</h2>
-          <h4 class="text-muted">{{ product.price | currency }}</h4>
-
-          <p>{{ product.description }}</p>
-
-          <p><strong>Categoría:</strong> {{ product.categoryName }}</p>
-          <p><strong>Stock disponible:</strong> {{ product.stock }}</p>
-
-          <!-- Campo Cantidad debajo de stock -->
-          <mat-form-field appearance="fill" class="w-25">
-            <mat-label>Cantidad</mat-label>
-            <input matInput type="number" min="1" [max]="product.stock" [(ngModel)]="quantity">
-          </mat-form-field>
-
-          <!-- Botones alineados a la derecha -->
-          <div class="d-flex justify-content-end gap-2 mt-2">
-            <button mat-stroked-button color="primary" (click)="returnStore()">
-              <mat-icon class="me-1">arrow_back</mat-icon> Volver
-            </button>
-
-            <button mat-raised-button color="primary" (click)="onAddToCart()"
-              [disabled]="quantity < 1 || quantity > product.stock!">
-              Añadir al carrito
-            </button>
+          <h2 class="fw-bold" style="font-size: 2rem;">{{ product.name }}</h2>
+          <div>
+            <span class="fs-4 fw-semibold text-primary">{{ product.price | currency }}</span>
+          </div>
+          <p class="mb-2 text-muted" style="font-size: 1.07rem;">{{ product.description }}</p>
+          <div>
+            <span class="badge bg-light text-dark border me-2">
+              <strong>Categoría:</strong> {{ product.categoryName }}
+            </span>
+            <span class="badge bg-success bg-opacity-10 text-success border">
+              <strong>Stock:</strong> {{ product.stock }}
+            </span>
+          </div>
+          <div class="d-flex align-items-center gap-2 mt-3">
+            <mat-form-field appearance="outline" class="flex-shrink-0" style="width: 120px;">
+              <mat-label>Cantidad</mat-label>
+              <input matInput type="number" min="1" [max]="product.stock" [(ngModel)]="quantity">
+            </mat-form-field>
+            <div class="ms-auto d-flex gap-2">
+              <button mat-stroked-button color="primary" (click)="returnStore()" class="px-3">
+                <mat-icon>arrow_back</mat-icon>
+                <span class="ms-1">Volver</span>
+              </button>
+              <button mat-raised-button color="primary" (click)="onAddToCart()" class="px-3"
+                [disabled]="quantity < 1 || quantity > product.stock!">
+                <mat-icon>add_shopping_cart</mat-icon>
+                <span class="ms-1">Añadir al carrito</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-
     </div>
   </mat-card>
 </div>
 
-<!-- Cargando -->
+<br>
+<br>
+
+<div class="container mb-5" *ngIf="isLoggedIn && (!hasReviewed || isEditing)">
+  <mat-card class="p-4 shadow-sm" style="max-width: 600px; margin: 0 auto; border-radius: 14px;">
+    <h5 class="mb-4 fw-bold" style="font-size:1.2rem;">Añadir reseña</h5>
+    <form (ngSubmit)="onAddReview()" #reviewForm="ngForm" class="d-flex flex-column gap-3">
+      <mat-form-field appearance="fill">
+        <mat-label>Comentario</mat-label>
+        <textarea matInput required [(ngModel)]="newReview.comment" name="comment" style="min-height: 60px;"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Puntuación</mat-label>
+        <mat-select required [(ngModel)]="newReview.rating" name="rating">
+          <mat-option *ngFor="let r of [1,2,3,4,5]" [value]="r">{{ r }} estrella{{r > 1 ? 's' : ''}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button color="accent" type="submit" [disabled]="!reviewForm.valid" style="font-size:1.05rem;">
+        Enviar reseña
+      </button>
+      <button mat-raised-button color="warn" type="button" (click)="onCancelEdit()" style="font-size:1.05rem;">
+        Cancelar
+      </button>
+    </form>
+  </mat-card>
+</div>
+
+<div *ngFor="let review of reviews" class="p-3 border rounded shadow-sm bg-white">
+  <div class="d-flex justify-content-between align-items-center mb-1">
+    <span class="fw-semibold" style="font-size: 1.1rem;">{{ review.userFullName }}</span>
+    <span>
+      <ng-container *ngFor="let star of [1,2,3,4,5]">
+        <mat-icon color="warn" fontIcon *ngIf="star <= review.rating!">star</mat-icon>
+        <mat-icon color="warn" fontIcon *ngIf="star > review.rating!">star_border</mat-icon>
+      </ng-container>
+    </span>
+  </div>
+
+  <div class="mb-2" style="font-size: 1.05rem;">
+    {{ review.comment }}
+  </div>
+
+  <!-- Botón de editar (solo si es del usuario actual) -->
+  <div class="d-flex justify-content-end align-items-center">
+    <small class="text-muted me-auto">{{ review.reviewDate | date:'short' }}</small>
+    <button mat-stroked-button color="primary" *ngIf="review.userId === user?.id" (click)="startEdit(review)"
+      style="font-size: 0.85rem; padding: 2px 10px;">
+      Editar reseña
+    </button>
+  </div>
+</div>
+
+
+
+
 <div class="text-center mt-5" *ngIf="!product">
-  <mat-spinner></mat-spinner>
+  <mat-spinner diameter="60"></mat-spinner>
 </div>

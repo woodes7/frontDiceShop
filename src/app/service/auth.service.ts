@@ -8,6 +8,8 @@ import { UserDto } from '../model/UserDto'; // Ajusta el path si es diferente
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<UserDto | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
+   private tokenSubject = new BehaviorSubject<string | null>(localStorage.getItem('token'));
+  token$ = this.tokenSubject.asObservable();
 
   constructor() {
     this.loadUserFromSession();
@@ -16,6 +18,17 @@ export class AuthService {
   setUser(user: UserDto): void {
     this.currentUserSubject.next(user);
     sessionStorage.setItem('user', JSON.stringify(user));
+  }
+
+   setToken(token: string): void {
+    localStorage.setItem('token', token);
+    this.tokenSubject.next(token);
+  }
+
+  logout(){
+    localStorage.clear();
+    sessionStorage.clear();
+    location.reload();
   }
 
   loadUserFromSession(): void {

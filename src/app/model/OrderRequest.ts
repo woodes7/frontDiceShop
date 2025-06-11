@@ -10,5 +10,4 @@ export interface OrderRequest {
   items: OrderItem[];
   totalAmount: number;
   billingAddress: BillingaddressDto;
-  couponCode?: string;
 }

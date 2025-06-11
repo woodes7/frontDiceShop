@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TemplateListComponent } from './components/admin/templates/template-list/template-list.component';
@@ -19,6 +19,7 @@ import { HeaderComponent } from './components/container/header/header.component'
 import { MatMenuModule } from '@angular/material/menu';
 import { LayoutComponent } from './components/container/layout/layout.component';
 import { LayoutAdminComponent } from './components/admin/layout-admin/layout-admin.component';
+import { JwtInterceptorService } from './service/jwt-interceptor.service';
 
 
 @NgModule({
@@ -42,7 +43,7 @@ import { LayoutAdminComponent } from './components/admin/layout-admin/layout-adm
     MatInputModule,
     MatMenuModule
   ],
-  providers: [provideHttpClient()],
+    providers: [provideHttpClient(withInterceptorsFromDi()), { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

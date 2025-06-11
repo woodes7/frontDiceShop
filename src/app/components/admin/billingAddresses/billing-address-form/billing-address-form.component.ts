@@ -45,7 +45,7 @@ export class BillingAddressFormComponent implements OnInit {
   }
 
   loadForm(address: BillingaddressDto): void {
-    console.log(address)
+   
     this.form = this.fb.group({
       country: [address.country, Validators.required],
       state: [address.state, Validators.required],
@@ -62,19 +62,16 @@ export class BillingAddressFormComponent implements OnInit {
 
   getFormData(): BillingaddressDto {
     const values = this.form.value;
-    console.log(values);
+
    // this.currentAddress.creationDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')!;
-    console.log(this.currentAddress);
+
     return {
       ...this.currentAddress,
       ...values,
     };
   }
 
-  onSubmit(): void {
-    if (this.form.invalid)
-      console.log("fallo");
-
+  onSubmit(): void {  
     const address = this.getFormData();
 
     if (this.isEdit) {

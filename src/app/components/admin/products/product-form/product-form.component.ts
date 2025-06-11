@@ -67,7 +67,7 @@ export class ProductFormComponent implements OnInit {
     this.productService.getProductById(id).subscribe(
       {
         next: (response) =>{
-          console.log(response)
+    
           this.loadForm(response)
         }
       }

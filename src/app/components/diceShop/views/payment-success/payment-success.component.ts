@@ -34,7 +34,6 @@ export class PaymentSuccessComponent implements OnInit {
       {
         next: (response) => {
           if (response) {
-            console.log(response);
             this.paymentService.postPurchase(response.id).subscribe();
           }
         }

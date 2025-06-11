@@ -64,18 +64,18 @@ export class BillingAddressListComponent implements OnInit {
   onEdit(id: number): void {
     this.router.navigate(['/admin/billingAddresses/form', id]);
   }
-
-  onDelete(id: number): void {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: 'Esta acción no se puede deshacer',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.billingAddressService.deleteBillingAddress(id).subscribe((res) => {
+onDelete(id: number): void {
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: 'Esta acción no se puede deshacer',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.billingAddressService.deleteBillingAddress(id).subscribe({
+        next: (res) => {
           if (res) {
             Swal.fire('Eliminado', 'La dirección de facturación ha sido eliminada correctamente.', 'success')
               .then(() => {
@@ -84,8 +84,25 @@ export class BillingAddressListComponent implements OnInit {
                 });
               });
           }
-        });
-      }
-    });
-  }
+        },
+        error: (err) => {
+          // Personaliza este bloque según el error que lance tu backend
+          if (err.status === 409 || err.status === 400 || (err.error && err.error.toString().includes('FOREIGN KEY'))) {
+            Swal.fire(
+              'No se puede eliminar',
+              'No se puede eliminar la dirección porque está asociada a otros registros. Elimina primero las relaciones dependientes.',
+              'error'
+            );
+          } else {
+            Swal.fire(
+              'Error',
+              'Ocurrió un error al intentar eliminar la dirección de facturación.',
+              'error'
+            );
+          }
+        }
+      });
+    }
+  });
+}
 }

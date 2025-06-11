@@ -37,7 +37,6 @@ export class RegisterComponent {
       {
         next: (response) => {
           if (response) {
-            console.log(response);
             if (!response.emailConfirmed) {
               Swal.fire({
                 icon: 'warning',
@@ -50,8 +49,7 @@ export class RegisterComponent {
                   if(res.isConfirmed)
                     this.userService.sendConfirmationEmail(this.user.email).subscribe(
                       {
-                        next:(response) => {
-                          console.log(response);
+                        next:(response) => {                        
                         }
                       }
                     );

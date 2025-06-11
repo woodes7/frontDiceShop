@@ -26,7 +26,6 @@ export class DiscountService {
   if (search) {
     params = params.set('search', search);
   }
-  console.log("etras")
   return this.http.get<PagedResult<DiscountDto>>(`${this.apiUrl}/discountsPaged`, { params });
 }
 

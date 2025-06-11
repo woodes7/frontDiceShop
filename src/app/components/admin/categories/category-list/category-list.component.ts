@@ -12,7 +12,7 @@ import { PageEvent } from '@angular/material/paginator';
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.css'
 })
-export class CategoryListComponent implements OnInit { 
+export class CategoryListComponent implements OnInit {
   displayedColumns: string[] = ['name', 'description', 'actions'];
   categories: CategoryDto[];
   totalItems = 0;
@@ -20,10 +20,10 @@ export class CategoryListComponent implements OnInit {
   pageSize = 5;
   searchTerm = '';
 
-constructor(private categoryService: CategoryService, private router: Router) {
-   this.categories = [];
-    
-}
+  constructor(private categoryService: CategoryService, private router: Router) {
+    this.categories = [];
+
+  }
   ngOnInit(): void {
     this.loadCategories();
   }
@@ -47,7 +47,7 @@ constructor(private categoryService: CategoryService, private router: Router) {
     this.loadCategories();
   }
 
-   onAdd(): void {
+  onAdd(): void {
     this.router.navigate(['/admin/categories/form']);
   }
 
@@ -56,7 +56,7 @@ constructor(private categoryService: CategoryService, private router: Router) {
   }
 
   onDelete(id: number): void {
-     Swal.fire({
+    Swal.fire({
       title: '¿Estás seguro?',
       text: 'Esta acción no se puede deshacer',
       icon: 'warning',
@@ -65,19 +65,37 @@ constructor(private categoryService: CategoryService, private router: Router) {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.categoryService.deleteCategory(id).subscribe((res) => {
-          if (res) {
-            Swal.fire('Eliminado', 'La categoría ha sido eliminada correctamente.', 'success')
-            .then(() => {
-              this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                this.router.navigate(['/admin/categories']);
-
-              });
-            });
+        this.categoryService.deleteCategory(id).subscribe({
+          next: (res) => {
+            if (res) {
+              Swal.fire('Eliminado', 'La categoría ha sido eliminada correctamente.', 'success')
+                .then(() => {
+                  this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                    this.router.navigate(['/admin/categories']);
+                  });
+                });
+            }
+          },
+          error: (err) => {
+            // Aquí capturas el error de Foreign Key
+            if (err.status === 409 || err.status === 400 || err.error?.includes('FOREIGN KEY')) {
+              Swal.fire(
+                'No se puede eliminar',
+                'La categoría está asociada a uno o más productos. Elimina primero los productos asociados.',
+                'error'
+              );
+            } else {
+              Swal.fire(
+                'Error',
+                'Ocurrió un error al intentar eliminar la categoría.',
+                'error'
+              );
+            }
           }
         });
       }
     });
   }
+
 
 }

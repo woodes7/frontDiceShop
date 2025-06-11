@@ -75,15 +75,10 @@ export class PayComponent implements OnInit {
       totalAmount: this.total,
       billingAddress: this.billingAddress
     };
-
-    console.log("🧾 Pedido enviado:", orderRequest);
-
     this.paymentService.pay(orderRequest).subscribe(res => {
-      console.log("✅ Redirigiendo a Stripe:", res);
       window.location.href = res.url;
     });
   }
-
 
   getAddress(userId: number) {
     this.billingAddressService.getPrimaryBillingAddressByUser(userId).subscribe(
@@ -94,7 +89,6 @@ export class PayComponent implements OnInit {
         }
       }
     );
-
   }
 
   returnCart() {
