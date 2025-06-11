@@ -20,7 +20,6 @@ export class ConfirmRegisterComponent implements OnInit {
   ngOnInit(): void {
     this.token = this.route.snapshot.paramMap.get('token');
 
-    console.log(this.token);
     if (this.token) {
       this.userService.confirmEmail(this.token).subscribe({
         next: () => {

@@ -64,12 +64,10 @@ export class ProductDetailComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log(this.isEditing)
     this.getReviewsByProductOfUser();
     this.productId = Number(this.route.snapshot.paramMap.get('id'));
     this.productService.getProductById(this.productId).subscribe(product => {
       this.product = product;
-console.log(this.isEditing)
       this.loadReviews();
     });
   }
@@ -182,7 +180,6 @@ console.log(this.isEditing)
     } else {
       this.productReviewService.addProductReview(this.newReview).subscribe(success => {
         if (success) {
-          console.log(success)
           Swal.fire('¡Gracias!', 'Tu reseña ha sido añadida.', 'success');
           this.newReview = new ProductreviewDto();
           this.hasReviewed = true;
